@@ -4,7 +4,7 @@ import json
 import os
 from extraction import analyze_document
 from dotenv import load_dotenv
-
+from streamlit_ace import st_ace
 
 load_dotenv()
 
@@ -48,9 +48,9 @@ if not st.session_state["authenticated"]:
 else:
     left,right = st.columns([0.5,0.5],gap="small")
     with right:
-        st.button("Logout", on_click=logout, type="primary", use_container_width=True)
+        st.button("Logout", on_click=logout, type="secondary", use_container_width=True)
     with left:
-        st.button("Reset", on_click=reset, type="secondary", use_container_width=True)
+        st.button("Reset", on_click=reset, type="primary", use_container_width=True)
        
 
     
@@ -82,12 +82,12 @@ else:
             if edit_button:
                 st.session_state["is_editing"] = True
         else:
-            edited_text = st.text_area("Resultat", value=st.session_state["analysis_result"], height=400)
+            st.session_state["analysis_result"]  = st_ace( value=st.session_state["analysis_result"],placeholder='', height=500, language='markdown', theme='eclipse', keybinding='vscode', min_lines=12, max_lines=None, font_size=14, tab_size=4, wrap=True, show_gutter=True, show_print_margin=False, readonly=False, annotations=None, markers=None, auto_update=False, key=None)
             with button_placeholder.container():
                 save_button = st.button("Änderungen speichern")
                 cancel_button = st.button("Abbrechen",type="primary")
             if save_button:
-                st.session_state["analysis_result"] = edited_text
+                
                 st.session_state["is_editing"] = False
             if cancel_button:
                 st.session_state["is_editing"] = False
