@@ -6,6 +6,8 @@ To learn more, please visit the documentation - Quickstart: Form Recognizer Pyth
 https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-v3-sdk-rest-api?view=doc-intel-3.1.0&pivots=programming-language-python
 """
 
+SECRET_ENDPOINT ="https://petvision.cognitiveservices.azure.com/"
+SECRET_KEY=""
 
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
