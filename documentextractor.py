@@ -31,8 +31,7 @@ def reset():
     for key in list(st.session_state.keys()):
         if key != "authenticated":
             del st.session_state[key]
-    
-    
+
 if not st.session_state["authenticated"]:
     st.title("Login")
     username = st.text_input("Username")
@@ -99,8 +98,9 @@ else:
                 
         download_button=st.download_button("dokument herunterladen",data=st.session_state["analysis_result"],file_name="resultat.md",use_container_width=True,type="primary")
         if download_button:
+            st.balloons()
             reset()
-            st.rerun()
+            
     
   
         
