@@ -6,8 +6,6 @@ To learn more, please visit the documentation - Quickstart: Form Recognizer Pyth
 https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstarts/get-started-v3-sdk-rest-api?view=doc-intel-3.1.0&pivots=programming-language-python
 """
 
-SECRET_ENDPOINT ="https://petvision.cognitiveservices.azure.com/"
-SECRET_KEY="abfcb97951a24fea8f99586eea7c818e"
 
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
@@ -25,6 +23,8 @@ load_dotenv()
 endpoint = os.getenv("SECRET_ENDPOINT")
 key = os.getenv("SECRET_KEY")
 
+if not key:
+    raise ValueError("API key (SECRET_KEY) is missing or not set properly.")
 
 async def analyze_document(file):
     client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(key))
