@@ -98,6 +98,9 @@ else:
                 st.rerun()
                 
         download_button=st.download_button("dokument herunterladen",data=st.session_state["analysis_result"],file_name="resultat.md",use_container_width=True,type="primary")
+        if download_button:
+            reset()
+            st.rerun()
     
   
         
