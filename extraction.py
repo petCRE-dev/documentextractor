@@ -9,7 +9,7 @@ https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstart
 
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
-from dotenv import load_dotenv
+
 import os
 import io
 """
@@ -18,10 +18,10 @@ secure methods to store and access your credentials. For more information, see
 https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-security?tabs=command-line%2Ccsharp#environment-variables-and-application-configuration
 """
 
-load_dotenv()
 
-endpoint = os.getenv("SECRET_ENDPOINT")
-key = os.getenv("SECRET_KEY")
+
+endpoint = os.environ["SECRET_ENDPOINT"]
+key = os.environ["SECRET_KEY"]
 
 if not key:
     raise ValueError("API key (SECRET_KEY) is missing or not set properly.")
