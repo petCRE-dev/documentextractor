@@ -20,14 +20,16 @@ https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-sec
 """
 
 
-load_dotenv()
-endpoint =os.getenv("ENDPOINT")
-key = os.getenv("KEY")
-
-if not key:
-    raise ValueError("API key (KEY) is missing or not set properly.")
 
 async def analyze_document(file):
+    
+    load_dotenv()
+    endpoint =os.getenv("ENDPOINT")
+    key = os.getenv("KEY")
+
+    if not key:
+        raise ValueError("API key (KEY) is missing or not set properly.")
+    
     client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(key))
     print("test")
     # Convert the uploaded file to bytes
