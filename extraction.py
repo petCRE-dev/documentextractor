@@ -12,6 +12,7 @@ from azure.ai.formrecognizer import DocumentAnalysisClient
 
 import os
 import io
+from dotenv import load_dotenv
 """
 Remember to remove the key from your code when you're done, and never post it publicly. For production, use
 secure methods to store and access your credentials. For more information, see 
@@ -19,12 +20,12 @@ https://docs.microsoft.com/en-us/azure/cognitive-services/cognitive-services-sec
 """
 
 
-
-endpoint = os.environ["SECRET_ENDPOINT"]
-key = os.environ["SECRET_KEY"]
+load_dotenv()
+endpoint =os.getenv("ENDPOINT")
+key = os.getenv("KEY")
 
 if not key:
-    raise ValueError("API key (SECRET_KEY) is missing or not set properly.")
+    raise ValueError("API key (KEY) is missing or not set properly.")
 
 async def analyze_document(file):
     client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(key))
