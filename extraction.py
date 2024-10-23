@@ -7,7 +7,7 @@ https://learn.microsoft.com/azure/applied-ai-services/form-recognizer/quickstart
 """
 
 SECRET_ENDPOINT ="https://petvision.cognitiveservices.azure.com/"
-SECRET_KEY="abfcb97951a24fea8f99586eea7c818e"
+SECRET_KEY=""
 
 from azure.core.credentials import AzureKeyCredential
 from azure.ai.formrecognizer import DocumentAnalysisClient
