@@ -13,6 +13,8 @@ from azure.ai.formrecognizer import DocumentAnalysisClient
 import os
 import io
 from dotenv import load_dotenv
+import requests
+import json
 """
 Remember to remove the key from your code when you're done, and never post it publicly. For production, use
 secure methods to store and access your credentials. For more information, see 
@@ -63,5 +65,30 @@ async def analyze_document(file):
    
        
     
-    return "\n".join(analysis_text)
+    text = "\n".join(analysis_text)
+    
+    restructured_text=await clean_text_request_async(text)
+    
+    
+    
+    
+    return restructured_text
 
+async def clean_text_request_async (text):
+   
+    url = "https://api.dify.ai/v1/chat-messages"
+    headers = {
+    "Authorization": f"Bearer {os.getenv('DIFY_KEY')}",
+    "Content-Type": "application/json"
+    }
+    data = {
+    "inputs": {},
+    "query": text,
+    "response_mode": "blocking",
+    "conversation_id": "",
+    "user": "abc-123",
+    "files": [
+            ]
+    }
+    response= requests.post(url= url,headers=headers,data=json.dumps(data))
+    return json.loads(response.text)["answer"]

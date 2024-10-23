@@ -41,6 +41,7 @@ if not st.session_state["authenticated"]:
     if st.button("Login"):
         if username ==  os.getenv("USERNAME") and password ==  os.getenv("PASSWORD"):
             login()
+            st.rerun()
         else:
             st.error("Ungültiges Username oder Password")
 
@@ -59,7 +60,7 @@ else:
     # Fixed top buttons
     button_placeholder = st.empty()
     st.subheader("Resultat:")
-    st.session_state["uploaded_file"] = st.sidebar.file_uploader("File hochladen", type=["pdf"])
+    st.session_state["uploaded_file"] = st.sidebar.file_uploader("File hochladen", type=["pdf"],)
 
     if "analysis_result" not in st.session_state:
         st.session_state["analysis_result"] = ""
@@ -67,7 +68,7 @@ else:
 
     if st.session_state["uploaded_file"] != None:
         with button_placeholder.container():
-            analyze_button = st.button("Analyze Document")
+            analyze_button = st.button("Dokument analysieren")
         if analyze_button:
             with st.spinner("Dokument wird analysiert..."):
                 analysis_text = asyncio.run(analyze_document(st.session_state["uploaded_file"]))
@@ -81,16 +82,22 @@ else:
                 edit_button = st.button("✏️ Bearbeiten")
             if edit_button:
                 st.session_state["is_editing"] = True
+                st.rerun()
         else:
-            md_content  = st_ace( value=st.session_state["analysis_result"],placeholder='', height=500, language='markdown', theme='eclipse', keybinding='vscode', min_lines=12, max_lines=None, font_size=14, tab_size=4, wrap=True, show_gutter=True, show_print_margin=False, readonly=False, annotations=None, markers=None, auto_update=False, key=None)
+            md_content  = st_ace( value=st.session_state["analysis_result"],placeholder='', height=400, language='markdown', theme='eclipse', keybinding='vscode', min_lines=12, max_lines=None, font_size=14, tab_size=4, wrap=True, show_gutter=True, show_print_margin=False, readonly=False, annotations=None, markers=None, auto_update=False, key=None)
             with button_placeholder.container():
-                save_button = st.button("Änderungen speichern")
+                
+                save_button = st.button("Änderungen speichern",disabled=st.session_state["analysis_result"]==md_content)
                 cancel_button = st.button("Abbrechen",type="primary")
             if save_button:
                 st.session_state["analysis_result"]=md_content
                 st.session_state["is_editing"] = False
+                st.rerun()
             if cancel_button:
                 st.session_state["is_editing"] = False
+                st.rerun()
+                
+        download_button=st.download_button("dokument herunterladen",data=st.session_state["analysis_result"],file_name="resultat.md",use_container_width=True,type="primary")
     
   
         
