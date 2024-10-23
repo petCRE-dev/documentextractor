@@ -54,11 +54,11 @@ else:
        
 
     
-    st.title("Extrahierung von Text aus Dokumente")
-
+    st.header("Extrahierung von Text aus Dokumente")
+    st.markdown('Klicke <a href="https://www.markdownguide.org/cheat-sheet/" target="_blank">hier</a>, um den Markdown Cheat-sheet zu öffnen!',unsafe_allow_html=True)
     # Fixed top buttons
     button_placeholder = st.empty()
-
+    st.subheader("Resultat:")
     st.session_state["uploaded_file"] = st.sidebar.file_uploader("File hochladen", type=["pdf"])
 
     if "analysis_result" not in st.session_state:
@@ -82,12 +82,12 @@ else:
             if edit_button:
                 st.session_state["is_editing"] = True
         else:
-            st.session_state["analysis_result"]  = st_ace( value=st.session_state["analysis_result"],placeholder='', height=500, language='markdown', theme='eclipse', keybinding='vscode', min_lines=12, max_lines=None, font_size=14, tab_size=4, wrap=True, show_gutter=True, show_print_margin=False, readonly=False, annotations=None, markers=None, auto_update=False, key=None)
+            md_content  = st_ace( value=st.session_state["analysis_result"],placeholder='', height=500, language='markdown', theme='eclipse', keybinding='vscode', min_lines=12, max_lines=None, font_size=14, tab_size=4, wrap=True, show_gutter=True, show_print_margin=False, readonly=False, annotations=None, markers=None, auto_update=False, key=None)
             with button_placeholder.container():
                 save_button = st.button("Änderungen speichern")
                 cancel_button = st.button("Abbrechen",type="primary")
             if save_button:
-                
+                st.session_state["analysis_result"]=md_content
                 st.session_state["is_editing"] = False
             if cancel_button:
                 st.session_state["is_editing"] = False

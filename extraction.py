@@ -31,7 +31,7 @@ async def analyze_document(file):
         raise ValueError("API key (KEY) is missing or not set properly.")
     
     client = DocumentAnalysisClient(endpoint=endpoint, credential=AzureKeyCredential(key))
-    print("test")
+
     # Convert the uploaded file to bytes
     file_bytes = file.read()
     
@@ -43,14 +43,14 @@ async def analyze_document(file):
     analysis_text = []
     
     if hasattr(result, 'paragraphs'):
-        analysis_text.append("\n## Paragraphen\n")
+      
         for paragraph in result.paragraphs:
-            analysis_text.append(paragraph.content)
+            analysis_text.append(paragraph.content+"\n")
             
     
     if hasattr(result, 'tables'):
         for idx, table in enumerate(result.tables):
-            analysis_text.append(f"\n## Tabellen {idx + 1}\n")
+            analysis_text.append(f"\n#### Tabelle {idx + 1}\n")
             rows = [[] for _ in range(table.row_count)]
             for cell in table.cells:
                 rows[cell.row_index].append(cell.content)
@@ -60,13 +60,7 @@ async def analyze_document(file):
             for row in rows:
                 analysis_text.append(" | ".join(row))
     
-    if hasattr(result, 'key_value_pairs'):
-        analysis_text.append("## Schlüssel-Wert-Paar\n")
-        for kv_pair in result.key_value_pairs:
-            if kv_pair.key and kv_pair.value:
-                analysis_text.append(f"**{kv_pair.key.content}**: {kv_pair.value.content}\n")
-            elif kv_pair.key:
-                analysis_text.append(f"**{kv_pair.key.content}**: None\n")
+   
        
     
     return "\n".join(analysis_text)
