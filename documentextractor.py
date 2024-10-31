@@ -24,6 +24,8 @@ if "authenticated" not in st.session_state:
     st.session_state["authenticated"]=False
 if "uploaded_file" not in st.session_state:
     st.session_state["uploaded_file"]=None  
+if "uploaded_file_name" not in st.session_state:
+    st.session_state["uploaded_file_name"]=None  
 # Streamlit app setup
 
 @st.dialog("test",width="large",)
@@ -85,8 +87,8 @@ else:
 
     if st.session_state["uploaded_file"] != None:
         
-        
-        st.sidebar.button("view",on_click=display_pdf)
+        st.session_state["uploaded_file_name"]=st.session_state["uploaded_file"].name.replace("pdf","md")
+        #st.sidebar.button("view",on_click=display_pdf)
        
 
         with button_placeholder.container():
@@ -105,6 +107,12 @@ else:
             if edit_button:
                 st.session_state["is_editing"] = True
                 st.rerun()
+            download_button=st.download_button("dokument herunterladen",data=st.session_state["analysis_result"],file_name=st.session_state["uploaded_file_name"],use_container_width=True,type="primary")
+            if download_button:
+                st.balloons()
+                time.sleep(2.5)
+                reset()
+                st.rerun()
         else:
             md_content  = st_ace( value=st.session_state["analysis_result"],placeholder='', height=400, language='markdown', theme='eclipse', keybinding='vscode', min_lines=12, max_lines=None, font_size=14, tab_size=4, wrap=True, show_gutter=True, show_print_margin=False, readonly=False, annotations=None, markers=None, auto_update=False, key=None)
             with button_placeholder.container():
@@ -119,12 +127,7 @@ else:
                 st.session_state["is_editing"] = False
                 st.rerun()
                 
-        download_button=st.download_button("dokument herunterladen",data=st.session_state["analysis_result"],file_name="resultat.md",use_container_width=True,type="primary")
-        if download_button:
-            st.balloons()
-            time.sleep(2.5)
-            reset()
-            st.rerun()
+        
     
   
         
