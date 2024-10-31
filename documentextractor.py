@@ -5,6 +5,10 @@ import os
 from extraction import analyze_document
 from dotenv import load_dotenv
 from streamlit_ace import st_ace
+import time
+
+import urllib
+import base64
 
 load_dotenv()
 
@@ -22,7 +26,20 @@ if "uploaded_file" not in st.session_state:
     st.session_state["uploaded_file"]=None  
 # Streamlit app setup
 
-
+@st.dialog("test",width="large",)
+def display_pdf():
+    
+    if st.session_state["uploaded_file"] !=None:
+        base64_pdf = base64.b64encode(st.session_state["uploaded_file"].read()).decode('utf-8')
+ 
+        # Embedding PDF in HTML
+        pdf_display = F'<iframe src="data:application/pdf;base64,{base64_pdf}"  width="100%" height="200" type="application/pdf"></iframe>'
+        
+        # Displaying File
+        st.markdown(pdf_display, unsafe_allow_html=True) 
+        
+        
+    
 def login():
     st.session_state["authenticated"]=True
 def logout():
@@ -31,6 +48,7 @@ def reset():
     for key in list(st.session_state.keys()):
         if key != "authenticated":
             del st.session_state[key]
+   
 
 if not st.session_state["authenticated"]:
     st.title("Login")
@@ -59,13 +77,18 @@ else:
     # Fixed top buttons
     button_placeholder = st.empty()
     st.subheader("Resultat:")
-    st.session_state["uploaded_file"] = st.sidebar.file_uploader("File hochladen", type=["pdf"],)
+    st.session_state["uploaded_file"] = st.sidebar.file_uploader("File hochladen", type=["pdf"])
 
     if "analysis_result" not in st.session_state:
         st.session_state["analysis_result"] = ""
         st.session_state["is_editing"] = False
 
     if st.session_state["uploaded_file"] != None:
+        
+        
+        st.sidebar.button("view",on_click=display_pdf)
+       
+
         with button_placeholder.container():
             analyze_button = st.button("Dokument analysieren")
         if analyze_button:
@@ -99,8 +122,9 @@ else:
         download_button=st.download_button("dokument herunterladen",data=st.session_state["analysis_result"],file_name="resultat.md",use_container_width=True,type="primary")
         if download_button:
             st.balloons()
+            time.sleep(2.5)
             reset()
-            
+            st.rerun()
     
   
         

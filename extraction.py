@@ -68,11 +68,12 @@ async def analyze_document(file):
     text = "\n".join(analysis_text)
     
     restructured_text=await clean_text_request_async(text)
+    replaced=restructured_text.replace("```","")
+    replaced=replaced.replace("markdown","")
     
     
     
-    
-    return restructured_text
+    return replaced
 
 async def clean_text_request_async (text):
    
